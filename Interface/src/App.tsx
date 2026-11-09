@@ -145,6 +145,7 @@ function highlight(line: string) {
 
 export default function App() {
   const clientPid = (window as Window & { __capriPid?: number }).__capriPid
+  const clientStatus = (window as Window & { __capriStatus?: string }).__capriStatus
   const [page, setPage] = useState<Page>("editor")
   const saved = useMemo(loadStore, [])
   const [scripts, setScripts] = useState<Script[]>(
@@ -327,7 +328,7 @@ export default function App() {
           <div className="sidebar-bottom">
             <div className="version">
               <span>
-                <i /> {clientPid ? `Roblox detectado · PID ${clientPid}` : "Sessão local"}
+                <i /> {clientPid ? clientStatus || `Roblox detectado · PID ${clientPid}` : "Sessão local"}
               </span>
               <small>
                 CAPRI <span>v1.0.0</span>
@@ -789,3 +790,4 @@ export default function App() {
     </main>
   )
 }
+

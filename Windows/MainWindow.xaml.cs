@@ -1,6 +1,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Diagnostics;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Web.WebView2.Core;
@@ -53,8 +54,11 @@ public partial class MainWindow : Window
                 "capri.local", uiDirectory, CoreWebView2HostResourceAccessKind.Allow);
             var client = Process.GetProcessesByName("RobloxPlayerBeta").FirstOrDefault();
             if (client is not null)
+            {
+                var status = RobloxInspector.Inspect(client);
                 await Browser.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(
-                    $"window.__capriPid = {client.Id};");
+                    $"window.__capriPid = {client.Id}; window.__capriStatus = {JsonSerializer.Serialize(status)};");
+            }
             Browser.Source = new Uri("https://capri.local/index.html");
         }
         catch (Exception error)
@@ -63,3 +67,4 @@ public partial class MainWindow : Window
         }
     }
 }
+
